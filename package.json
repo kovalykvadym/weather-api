@@ -1,13 +1,24 @@
 {
   "name": "weather-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Weather API with 3rd party integration and Redis caching",
+  "main": "src/server.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "lint": "biome check ./src",
+    "format": "biome format ./src --write",
+    "check": "biome check ./src --write"
   },
-  "keywords": [],
+  "keywords": [
+    "weather",
+    "api",
+    "nodejs",
+    "express",
+    "redis",
+    "cache"
+  ],
   "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "license": "MIT"
 }
