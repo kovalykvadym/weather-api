@@ -1,9 +1,7 @@
-function getWeather(city) {
-	return {
-		city: "Kyiv",
-		temperature: 20,
-		description: "Sunny",
-	};
+const getWeatherByCity = require("../../integrations/weatherApi.client");
+
+async function getWeather(city) {
+	return getWeatherByCity(city);
 }
 
 module.exports = getWeather;
