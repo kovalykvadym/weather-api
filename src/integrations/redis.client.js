@@ -1,34 +1,51 @@
-const redis = require("redis");
-const redisClient = redis.createClient({
-	url: "redis://localhost:6379",
+const { createClient } = require("redis");
+
+const redisClient = createClient({
+	url: process.env.REDIS_URL || "redis://localhost:6379",
+	socket: {
+		reconnectStrategy: (retries) => {
+			return Math.min(retries * 100, 3000);
+		},
+	},
 });
 
-redisClient.on("error", (error) => {
-	console.error(`Redis Client Error: ${error}`);
+redisClient.on("error", (err) => {
+	console.log("Redis error:", err.message);
 });
 
 async function connectRedis() {
-	if (!redisClient.isOpen) {
-		await redisClient.connect();
+	try {
+		if (!redisClient.isOpen) {
+			await redisClient.connect();
+			console.log("Redis connected");
+		}
+	} catch (err) {
+		console.log("Redis initial connection failed");
 	}
 }
 
-function getRedisClient() {
-	return {
-		get: async (key) => {
-			const normalizeKey = key.trim().toLowerCase();
-			return redisClient.get(normalizeKey);
-		},
-		set: async (key, value, ttl = 43200) => {
-			const normalizeKey = key.trim().toLowerCase();
-			await redisClient.set(normalizeKey, value, {
-				EX: ttl,
-			});
-		},
-	};
+async function get(key) {
+	try {
+		if (!redisClient.isReady) return null;
+
+		return await redisClient.get(key);
+	} catch {
+		return null;
+	}
+}
+
+async function set(key, value, ttl = 3600) {
+	try {
+		if (!redisClient.isReady) return;
+
+		await redisClient.set(key, value, {
+			EX: ttl,
+		});
+	} catch {}
 }
 
 module.exports = {
+	get,
+	set,
 	connectRedis,
-	getRedisClient,
 };

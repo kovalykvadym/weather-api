@@ -1,14 +1,18 @@
 const dotenv = require("dotenv");
 const app = require("./app");
-const { connectRedis } = require("./integrations/redis.client");
+const redis = require("./integrations/redis.client");
 
 dotenv.config();
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 async function startServer() {
 	try {
-		await connectRedis();
+		if (!PORT) {
+			throw new Error("The port is not specified in the .env file");
+		}
+
+		await redis.connectRedis();
 
 		app.listen(PORT, () => {
 			console.log(`Server listening on port ${PORT}`);

@@ -1,18 +1,28 @@
 const getWeatherByCity = require("../../integrations/weatherApi.client");
-const { getRedisClient } = require("../../integrations/redis.client");
+const { get, set } = require("../../integrations/redis.client");
 
 async function getWeather(city) {
-	const key = `weather:${city}`;
+	const key = `weather:${city.trim().toLowerCase()}`;
 
-	const redis = getRedisClient();
-	const cached = await redis.get(key);
+	let cached = null;
+	try {
+		cached = await get(key);
+	} catch (error) {
+		console.warn(error);
+	}
 
 	if (cached !== null) {
 		return JSON.parse(cached);
 	}
 
 	const data = await getWeatherByCity(city);
-	await redis.set(key, JSON.stringify(data), 60);
+
+	try {
+		await set(key, JSON.stringify(data), 60);
+	} catch (error) {
+		console.warn(error);
+	}
+
 	return data;
 }
 

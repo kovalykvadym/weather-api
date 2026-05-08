@@ -5,7 +5,7 @@ async function getWeatherByCity(city) {
 	try {
 		const response = await axios.get(url);
 
-		const data = await response.data;
+		const data = response.data;
 
 		return {
 			location: data.resolvedAddress,
