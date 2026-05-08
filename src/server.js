@@ -12,11 +12,11 @@ async function startServer() {
 			throw new Error("The port is not specified in the .env file");
 		}
 
-		await redis.connectRedis();
-
 		app.listen(PORT, () => {
 			console.log(`Server listening on port ${PORT}`);
 		});
+
+		await redis.connectRedis();
 	} catch (error) {
 		console.error(error);
 		process.exit(1);
