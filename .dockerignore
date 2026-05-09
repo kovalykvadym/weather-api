@@ -1,0 +1,10 @@
+.git
+.idea
+node_modules
+tests
+.env
+.gitignore
+Dockerfile
+biome.json
+docker-compose.yml
+requests.http

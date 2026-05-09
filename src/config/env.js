@@ -1,15 +1,17 @@
 const joi = require("joi");
 require("dotenv").config();
 
-const schema = joi.object({
-	NODE_ENV: joi
-		.string()
-		.valid("development", "production", "test")
-		.default("development"),
-	PORT: joi.number().default(3000),
-	WEATHER_API_KEY: joi.string().required(),
-	REDIS_URL: joi.string().uri().default("redis://localhost:6379"),
-});
+const schema = joi
+	.object({
+		NODE_ENV: joi
+			.string()
+			.valid("development", "production", "test")
+			.default("development"),
+		PORT: joi.number().default(3000),
+		WEATHER_API_KEY: joi.string().required(),
+		REDIS_URL: joi.string().uri().default("redis://localhost:6379"),
+	})
+	.unknown();
 
 const { value, error } = schema.validate(process.env);
 
