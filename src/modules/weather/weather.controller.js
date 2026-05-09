@@ -1,14 +1,16 @@
 const getWeather = require("./weather.service");
+const AppError = require("../../errors/app-error");
 
-async function weatherController(req, res, next) {
+async function weatherController(req, res) {
 	const city = req.query.city;
 
-	try {
-		const payload = await getWeather(city);
-		return res.status(200).json(payload);
-	} catch (error) {
-		next(error);
+	if (!city) {
+		throw AppError("validation_error", "City is required", 400);
 	}
+
+	const payload = await getWeather(city);
+
+	return res.status(200).json(payload);
 }
 
 module.exports = weatherController;

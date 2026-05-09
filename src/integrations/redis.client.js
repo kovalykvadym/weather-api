@@ -1,51 +1,63 @@
 const { createClient } = require("redis");
+const logger = require("../utils/logger");
 
 const redisClient = createClient({
 	url: process.env.REDIS_URL || "redis://localhost:6379",
 	socket: {
-		reconnectStrategy: (retries) => {
-			return Math.min(retries * 100, 3000);
-		},
+		reconnectStrategy: (retries) => Math.min(retries * 100, 3000),
 	},
 });
 
 redisClient.on("error", (err) => {
-	console.log("Redis error:", err.message);
+	logger.error("Redis error:", err.message);
+});
+
+redisClient.on("connect", () => {
+	logger.info("Redis connecting...");
+});
+
+redisClient.on("ready", () => {
+	logger.info("Redis ready");
 });
 
 async function connectRedis() {
 	try {
 		if (!redisClient.isOpen) {
 			await redisClient.connect();
-			console.log("Redis connected");
 		}
 	} catch (err) {
-		console.log("Redis initial connection failed");
+		logger.error("Redis connection failed:", err.message);
 	}
 }
 
-async function get(key) {
+async function getCache(key) {
 	try {
 		if (!redisClient.isReady) return null;
 
-		return await redisClient.get(key);
-	} catch {
+		const normalizedKey = key.trim().toLowerCase();
+		return await redisClient.get(normalizedKey);
+	} catch (err) {
+		logger.error("Redis GET error:", err.message);
 		return null;
 	}
 }
 
-async function set(key, value, ttl = 3600) {
+async function setCache(key, value, ttl = 3600) {
 	try {
 		if (!redisClient.isReady) return;
 
-		await redisClient.set(key, value, {
+		const normalizedKey = key.trim().toLowerCase();
+
+		await redisClient.set(normalizedKey, value, {
 			EX: ttl,
 		});
-	} catch {}
+	} catch (err) {
+		logger.error("Redis SET error:", err.message);
+	}
 }
 
 module.exports = {
-	get,
-	set,
 	connectRedis,
+	getCache,
+	setCache,
 };

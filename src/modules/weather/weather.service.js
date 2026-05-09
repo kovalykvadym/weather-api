@@ -1,27 +1,26 @@
 const getWeatherByCity = require("../../integrations/weatherApi.client");
-const { get, set } = require("../../integrations/redis.client");
+const { getCache, setCache } = require("../../integrations/redis.client");
+const logger = require("../../utils/logger");
 
 async function getWeather(city) {
-	const key = `weather:${city.trim().toLowerCase()}`;
+	const normalizedCity = city.trim().toLowerCase();
+	const key = `weather:${normalizedCity}`;
 
-	let cached = null;
-	try {
-		cached = await get(key);
-	} catch (error) {
-		console.warn(error);
-	}
+	const cached = await getCache(key);
 
-	if (cached !== null) {
+	if (cached) {
+		logger.info("Cache hit", { key });
+
 		return JSON.parse(cached);
 	}
 
-	const data = await getWeatherByCity(city);
+	logger.info("Cache miss", { key });
 
-	try {
-		await set(key, JSON.stringify(data), 60);
-	} catch (error) {
-		console.warn(error);
-	}
+	const data = await getWeatherByCity(normalizedCity);
+
+	setCache(key, JSON.stringify(data), 60).catch((err) => {
+		console.warn("Cache write failed:", err.message);
+	});
 
 	return data;
 }

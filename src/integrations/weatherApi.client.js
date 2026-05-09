@@ -1,10 +1,10 @@
 const axios = require("axios");
+const AppError = require("../errors/app-error");
 
 async function getWeatherByCity(city) {
 	const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/today?key=${process.env.WEATHER_API_KEY}&unitGroup=metric&lang=uk`;
 	try {
 		const response = await axios.get(url);
-
 		const data = response.data;
 
 		return {
@@ -31,19 +31,19 @@ async function getWeatherByCity(city) {
 			const status = error.response.status;
 
 			if (status >= 400 && status < 500) {
-				throw { type: "city_not_found" };
+				throw AppError("city_not_found", "City not found", 404);
 			}
 
 			if (status >= 500) {
-				throw { type: "external_api_error" };
+				throw AppError("external_api_error", "External API error", 502);
 			}
 		}
 
 		if (error.request) {
-			throw { type: "external_api_error" };
+			throw AppError("external_api_error", "External API error", 502);
 		}
 
-		throw { type: "internal_error" };
+		throw AppError("internal_error", "Internal error", 500);
 	}
 }
 

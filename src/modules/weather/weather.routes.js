@@ -1,8 +1,8 @@
 const express = require("express");
 const weatherController = require("./weather.controller");
-const validateCityMiddleware = require("../../middleware/validate-city.middleware");
+const asyncWrapper = require("../../middleware/async-handler");
 const router = express.Router();
 
-router.get("/", validateCityMiddleware, weatherController);
+router.get("/", asyncWrapper(weatherController));
 
 module.exports = router;
