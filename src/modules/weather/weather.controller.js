@@ -1,5 +1,4 @@
 const getWeather = require("./weather.service");
-const AppError = require("../../errors/app-error");
 
 async function weatherController(req, res) {
 	const city = req.query.city;
