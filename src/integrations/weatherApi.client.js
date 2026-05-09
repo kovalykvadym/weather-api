@@ -1,8 +1,9 @@
 const axios = require("axios");
 const AppError = require("../errors/app-error");
+const env = require("../config/env");
 
 async function getWeatherByCity(city) {
-	const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/today?key=${process.env.WEATHER_API_KEY}&unitGroup=metric&lang=uk`;
+	const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}/today?key=${env.weatherApiKey}&unitGroup=metric&lang=uk`;
 	try {
 		const response = await axios.get(url);
 		const data = response.data;

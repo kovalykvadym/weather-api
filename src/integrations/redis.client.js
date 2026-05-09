@@ -1,8 +1,9 @@
 const { createClient } = require("redis");
 const logger = require("../utils/logger");
+const env = require("../config/env");
 
 const redisClient = createClient({
-	url: process.env.REDIS_URL || "redis://localhost:6379",
+	url: env.redisUrl,
 	socket: {
 		reconnectStrategy: (retries) => Math.min(retries * 100, 3000),
 	},
