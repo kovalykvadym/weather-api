@@ -1,6 +1,6 @@
 const getHealth = require("./health.service");
 
-function healthController(req, res) {
+function healthController(_req, res) {
 	const health = getHealth();
 
 	return res.status(200).json(health);

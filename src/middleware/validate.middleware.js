@@ -1,7 +1,7 @@
 const AppError = require("../errors/app-error");
 
 function validate(schema, property = "query") {
-	return (req, res, next) => {
+	return (req, _res, next) => {
 		const { error } = schema.validate(req[property]);
 
 		if (error) {

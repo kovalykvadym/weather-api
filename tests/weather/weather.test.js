@@ -1,21 +1,23 @@
 const request = require("supertest");
 const app = require("../../src/app");
 
-describe("GET /weather", () => {
+describe("GET /api/v1/weather", () => {
 	test("should return 400 when city is missing", async () => {
-		const response = await request(app).get("/weather");
+		const response = await request(app).get("/api/v1/weather");
 
 		expect(response.statusCode).toBe(400);
 	});
 
 	test("should return weather data for valid city", async () => {
-		const response = await request(app).get("/weather?city=Kyiv");
+		const response = await request(app).get("/api/v1/weather?city=Kyiv");
 
 		expect(response.statusCode).toBe(200);
 	});
 
 	test("should return 404 for invalid city", async () => {
-		const response = await request(app).get("/weather?city=INVALID_CITY_TEST");
+		const response = await request(app).get(
+			"/api/v1/weather?city=INVALID_CITY_TEST",
+		);
 
 		expect(response.statusCode).toBe(404);
 	});

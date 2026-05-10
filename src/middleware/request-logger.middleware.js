@@ -1,6 +1,6 @@
 const logger = require("../utils/logger");
 
-function requestLogger(req, res, next) {
+function requestLogger(req, _res, next) {
 	logger.info("Incoming message", {
 		id: req.id,
 		method: req.method,
