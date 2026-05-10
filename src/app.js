@@ -16,8 +16,8 @@ app.use(rateLimitMiddleware);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use("/weather", weatherRoutes);
-app.use("/health", healthRoutes);
+app.use("/api/v1/weather", weatherRoutes);
+app.use("/api/v1/health", healthRoutes);
 
 app.use(errorMiddleware);
 
