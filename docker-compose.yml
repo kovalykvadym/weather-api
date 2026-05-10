@@ -39,7 +39,7 @@ services:
   certbot:
     image: certbot/certbot
     volumes:
-      - ./certbot/conf:/etc/letencrypt
+      - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
 
 volumes:
@@ -49,4 +49,3 @@ networks:
   app-network:
     driver: bridge
 
-    
