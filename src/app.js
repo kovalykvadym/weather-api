@@ -7,8 +7,10 @@ const errorMiddleware = require("./middleware/error-handler.middleware");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocs = require("./docs/swagger");
 const healthRoutes = require("./modules/health/health.routes");
+const requestId = require("./middleware/request-id.middleware");
 
 app.use(express.json());
+app.use(requestId);
 app.use(requestLogger);
 app.use(rateLimitMiddleware);
 
