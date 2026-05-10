@@ -1,10 +1,7 @@
 const app = require("./app");
 const env = require("./config/env");
 const logger = require("./utils/logger");
-const {
-	connectRedis,
-	disconnectRedis,
-} = require("./integrations/redis.client");
+const redis = require("./integrations/redis.client");
 
 const PORT = env.port;
 let server = null;
@@ -15,7 +12,7 @@ async function startServer() {
 			console.log(`Server listening on port ${PORT}`);
 		});
 
-		await connectRedis();
+		await redis.connectRedis();
 	} catch (error) {
 		console.error(error);
 		process.exit(1);
@@ -26,7 +23,7 @@ function shutdownLogic(signal) {
 	logger.info(`Received ${signal}, starting graceful shutdown...`);
 
 	server.close(async () => {
-		await disconnectRedis();
+		await redis.disconnectRedis();
 		process.exit(0);
 	});
 

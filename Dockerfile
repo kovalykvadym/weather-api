@@ -7,8 +7,6 @@ RUN npm ci
 
 COPY src ./src
 
-RUN ls -la
-
 RUN adduser -D app
 USER app
 
