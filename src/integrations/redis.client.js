@@ -61,8 +61,15 @@ function getRedisStatus() {
 	return redisClient.isReady;
 }
 
+async function disconnectRedis() {
+	if (redisClient.isOpen) {
+		await redisClient.quit();
+	}
+}
+
 module.exports = {
 	connectRedis,
+	disconnectRedis,
 	getCache,
 	setCache,
 	getRedisStatus,
