@@ -1,5 +1,8 @@
 const express = require("express");
 const app = express();
+
+app.set("trust proxy", 1);
+
 const rateLimitMiddleware = require("./middleware/rate-limit.middleware");
 const requestLogger = require("./middleware/request-logger.middleware");
 const weatherRoutes = require("./modules/weather/weather.routes");
