@@ -30,51 +30,71 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 location:
- *                   type: string
- *                   example: Kyiv, Ukraine
- *                 timezone:
- *                   type: string
- *                   example: Europe/Kyiv
- *                 current_weather:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 meta:
  *                   type: object
  *                   properties:
- *                     temperature:
- *                       type: number
- *                       example: 20
- *                     feels_like:
- *                       type: number
- *                       example: 19
- *                     condition:
+ *                     requestId:
  *                       type: string
- *                       example: Clear
- *                     humidity:
- *                       type: number
- *                       example: 60
- *                     wind_speed:
- *                       type: number
- *                       example: 3.5
- *                     icon:
+ *                       format: uuid
+ *                       example: 123e4567-e89b-12d3-a456-426614174000
+ *                     cached:
+ *                       type: boolean
+ *                       example: false
+ *                     timestamp:
  *                       type: string
- *                       example: clear-day
- *                 today_forecast:
+ *                       format: date-time
+ *                       example: 2026-05-10T12:00:00.000Z
+ *                 data:
  *                   type: object
  *                   properties:
- *                     temp_max:
- *                       type: number
- *                       example: 23
- *                     temp_min:
- *                       type: number
- *                       example: 12
- *                     sunrise:
+ *                     location:
  *                       type: string
- *                       example: 06:12:00
- *                     sunset:
+ *                       example: Kyiv, Ukraine
+ *                     timezone:
  *                       type: string
- *                       example: 20:45:00
- *                     description:
- *                       type: string
- *                       example: Sunny with light clouds
+ *                       example: Europe/Kyiv
+ *                     current_weather:
+ *                       type: object
+ *                       properties:
+ *                         temperature:
+ *                           type: number
+ *                           example: 20
+ *                         feels_like:
+ *                           type: number
+ *                           example: 19
+ *                         condition:
+ *                           type: string
+ *                           example: Clear
+ *                         humidity:
+ *                           type: number
+ *                           example: 60
+ *                         wind_speed:
+ *                           type: number
+ *                           example: 3.5
+ *                         icon:
+ *                           type: string
+ *                           example: clear-day
+ *                     today_forecast:
+ *                       type: object
+ *                       properties:
+ *                         temp_max:
+ *                           type: number
+ *                           example: 23
+ *                         temp_min:
+ *                           type: number
+ *                           example: 12
+ *                         sunrise:
+ *                           type: string
+ *                           example: 06:12:00
+ *                         sunset:
+ *                           type: string
+ *                           example: 20:45:00
+ *                         description:
+ *                           type: string
+ *                           example: Sunny with light clouds
  *       400:
  *         description: City query parameter is missing
  *         content:

@@ -11,7 +11,7 @@ async function getWeather(city) {
 	if (cached) {
 		logger.info("Cache hit", { key });
 
-		return JSON.parse(cached);
+		return { data: JSON.parse(cached), cached: true };
 	}
 
 	logger.info("Cache miss", { key });
@@ -22,7 +22,7 @@ async function getWeather(city) {
 		console.warn("Cache write failed:", err.message);
 	});
 
-	return data;
+	return { data, cached: false };
 }
 
 module.exports = getWeather;
