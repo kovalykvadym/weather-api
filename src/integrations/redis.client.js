@@ -10,7 +10,7 @@ const redisClient = createClient({
 });
 
 redisClient.on("error", (err) => {
-	logger.error("Redis error:", err.message);
+	logger.error(`Redis error: ${err.message}`);
 });
 
 redisClient.on("connect", () => {
@@ -27,7 +27,7 @@ async function connectRedis() {
 			await redisClient.connect();
 		}
 	} catch (err) {
-		logger.error("Redis connection failed:", err.message);
+		logger.error(`Redis connection failed: ${err.message}`);
 	}
 }
 
@@ -38,7 +38,7 @@ async function getCache(key) {
 		const normalizedKey = key.trim().toLowerCase();
 		return await redisClient.get(normalizedKey);
 	} catch (err) {
-		logger.error("Redis GET error:", err.message);
+		logger.error(`Redis GET error: ${err.message}`);
 		return null;
 	}
 }
@@ -53,12 +53,17 @@ async function setCache(key, value, ttl = 3600) {
 			EX: ttl,
 		});
 	} catch (err) {
-		logger.error("Redis SET error:", err.message);
+		logger.error(`Redis SET error: ${err.message}`);
 	}
+}
+
+function getRedisStatus() {
+	return redisClient.isReady;
 }
 
 module.exports = {
 	connectRedis,
 	getCache,
 	setCache,
+	getRedisStatus,
 };

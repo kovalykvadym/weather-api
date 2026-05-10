@@ -14,7 +14,7 @@ const swaggerOptions = {
 			},
 		],
 	},
-	apis: ["./src/modules/weather/*.js"],
+	apis: ["./src/modules/**/*.js"],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
